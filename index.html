@@ -19,23 +19,12 @@
   </head>
   <body>
     <div class="expenses grid-flow">
-      <div class="balance flex-group">
+      <div class="balance">
         <div class="grid-flow" data-spacing="small">
           <h2>My balance</h2>
           <p class="balance__amount">$921.48</p>
         </div>
-        <svg
-          class="expenses-logo"
-          width="72"
-          height="48"
-          viewBox="0 0 72 48"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g fill="none" fill-rule="evenodd">
-            <circle fill="#382314" cx="48" cy="24" r="24" />
-            <circle stroke="#FFF" stroke-width="2" cx="24" cy="24" r="23" />
-          </g>
-        </svg>
+        <img src="/assets/logo.svg" alt="" aria-hidden="true" />
       </div>
 
       <div class="spending grid-flow">
@@ -58,9 +47,8 @@
 
         <hr class="divider" />
 
-        <div class="spending__info flex-group">
+        <div class="spending__info">
           <p class="spending__total">Total this month <span>$478.33</span></p>
-
           <p class="spending__comparison"><span>+2.4%</span> from last month</p>
         </div>
       </div>

@@ -1,3 +1,6 @@
+/*------------------------------------*\
+  #ROOT
+\*------------------------------------*/
 :root {
   --clr-primary-hsl-400: 10, 79%, 65%;
   --clr-accent-hsl-400: 186, 34%, 60%;
@@ -22,6 +25,8 @@
 
   --fw-regular: 400;
   --fw-bold: 700;
+
+  --transition: 250ms ease;
 }
 
 @media (min-width: 40em) {
@@ -35,6 +40,9 @@
   }
 }
 
+/*------------------------------------*\
+  #RESET
+\*------------------------------------*/
 *,
 *::before,
 *::after {
@@ -46,6 +54,34 @@
   font: inherit;
 }
 
+img,
+picture,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/**
+ * @see https://andy-bell.co.uk/a-modern-css-reset/
+ */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*------------------------------------*\
+  #GLOBAL
+\*------------------------------------*/
 body {
   display: grid;
   place-items: center;
@@ -58,6 +94,9 @@ body {
   color: var(--clr-neutral-400);
 }
 
+/*------------------------------------*\
+  #UTILITIES
+\*------------------------------------*/
 .grid-flow {
   display: grid;
   align-content: start;
@@ -66,13 +105,6 @@ body {
 
 .grid-flow[data-spacing="small"] {
   gap: 0.5rem;
-}
-
-.flex-group {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .section-title {
@@ -85,6 +117,26 @@ body {
   border-top: 2px solid var(--clr-neutral-200);
 }
 
+/**
+ * @see https://gist.github.com/ffoodd/000b59f431e3e64e4ce1a24d5bb36034
+ */
+.sr-only {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+  white-space: nowrap !important;
+}
+
+/*------------------------------------*\
+  #EXPENSES
+\*------------------------------------*/
 .expenses {
   width: min(100% - 1rem, 30rem);
 
@@ -101,7 +153,9 @@ body {
 }
 
 .balance {
+  display: flex;
   justify-content: space-between;
+  gap: 1rem;
 
   background-color: var(--clr-primary-400);
   color: var(--clr-neutral-100);
@@ -122,13 +176,11 @@ body {
   --bars-spacing: clamp(0.5rem, 2vw, 1rem);
   display: grid;
   grid-auto-flow: column;
-  /* grid-auto-columns: var(--bar-width); */
   align-items: end;
   gap: var(--bars-spacing);
 
   width: 100%;
   aspect-ratio: 1.5 / 1;
-  /* height: 15rem; */
   padding-block: 2rem;
 }
 
@@ -147,16 +199,14 @@ body {
   justify-content: center;
   align-items: end;
 
+  height: var(--height, 100%);
+
   background-color: var(--bar-bg);
   border-radius: 0.25rem;
-
-  height: var(--height, 100px);
   cursor: pointer;
-}
-
-.spending-chart__bar.active {
-  --bar-bg: var(--clr-accent-400);
-  --bar-bg-hover: hsl(var(--clr-accent-hsl-400), 0.5);
+  transition: var(--transition);
+  transform-origin: bottom;
+  animation: scale-up 500ms;
 }
 
 .spending-chart__bar:is(:hover, :focus) {
@@ -173,8 +223,9 @@ body {
 .spending-chart__bar::after {
   content: attr(data-label);
   top: 100%;
-  color: var(--clr-neutral-300);
+
   font-size: var(--fs-300);
+  color: var(--clr-neutral-300);
 }
 
 .spending-chart__bar::before {
@@ -183,12 +234,12 @@ body {
 
   margin-bottom: 0.5rem;
 
+  padding: 0.25rem 0.5rem;
   background-color: var(--clr-neutral-400);
   color: var(--clr-neutral-100);
-  border-radius: 0.5rem;
-  padding: 0.25rem 0.5rem;
 
   transition: opacity var(--transition);
+  border-radius: 0.5rem;
   opacity: 0;
 }
 
@@ -196,19 +247,27 @@ body {
   opacity: 1;
 }
 
+.spending-chart__bar.active {
+  --bar-bg: var(--clr-accent-400);
+  --bar-bg-hover: hsl(var(--clr-accent-hsl-400), 0.5);
+}
+
 .spending__info {
+  display: flex;
   align-items: end;
   justify-content: space-between;
-  vertical-align: baseline;
+  gap: 1rem;
   color: var(--clr-neutral-300);
 }
 
 .spending__total span {
   display: block;
+
   font-size: var(--fs-900);
-  color: var(--clr-neutral-400);
   font-weight: var(--fw-bold);
   line-height: 1.1;
+
+  color: var(--clr-neutral-400);
 }
 
 .spending__comparison {
@@ -223,7 +282,6 @@ body {
 
 @media (max-width: 40em) {
   .spending__info {
-    width: 1px solid red;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -234,16 +292,12 @@ body {
   }
 }
 
-.sr-only {
-  position: absolute;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  -webkit-clip-path: inset(50%);
-  clip-path: inset(50%);
-  border: 0;
-  white-space: nowrap;
+@keyframes scale-up {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
 }
